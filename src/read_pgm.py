@@ -1,3 +1,6 @@
+from PIL import Image
+import numpy as np
+
 def read_pgm(pgmf):
     """Return a raster of integers from a PGM as a list of lists."""
     pgmf.readline()
@@ -14,14 +17,23 @@ def read_pgm(pgmf):
         raster.append(row)
     return raster
 
+def display_in_txt(raster):
+    for i in raster:
+        for j in i:
+            if j == 0:
+                print(" ", end = "")
+            elif j == 254:
+                print("*", end = "")
+            else:
+                print("-", end = "")
+        print("\n", end = "")
+
+def crop_data(raster):
+    top, bottom, left, right = None
+    for i in range(len(raster)):
+        for j in range(len(raster[0])):
+            if raster[i][j] 
+
 file = open("maps/yahboomcar.pgm", "rb")
 raster = read_pgm(file)
-for i in raster:
-    for j in i:
-        if j == 0:
-            print(" ", end = "")
-        elif j == 254:
-            print("*", end = "")
-        else:
-            print("-", end = "")
-    print("\n", end = "")
+
