@@ -1,4 +1,6 @@
 from PIL import Image
+import numpy as np
+
 
 # Open the PGM file
 image = Image.open("1.pgm")
@@ -22,5 +24,6 @@ for y in range(height):
 
 # Crop the image to dicard most of the gray area
 image = image.crop((left, top, right+1, bottom+1))
-# Display the image
-image.show()
+
+# save the image to 2D np array for A* algo
+pixel_array = np.array(image)
