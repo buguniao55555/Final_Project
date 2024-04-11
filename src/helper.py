@@ -1,12 +1,29 @@
 import numpy as np
 from heapq import heappush, heappop
-from ReadPGM import read_pgm
-from PIL import Image
 
-def heuristic(a, b):
-    return np.sqrt((b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2)
+def take_local(grid, radius, op):
+    r = radius - 1
+    paddedd = np.pad(grid, [(r, r), (r, r)], mode="edge")
+    result = np.empty_like(grid)
+    
+    for i in range(grid.shape[0]):
+        for j in range(grid.shape[1]):
+            result[i, j] = op(paddedd[i: i + 2 * r + 1, j: j + 2 * r + 1])
+    return result
 
-def find_route_astar(grid, start, end):
+def l2norm(a, b):
+    return np.hypot(b[0] - a[0], b[1] - a[1])
+
+def construct_path(start, end, came_from):
+    path = []
+    p = end
+    while p != start:
+        path.append(p)
+        p = came_from[p]
+    path.reverse()
+    return path
+
+def find_route_astar(grid, start, end, heuristic = l2norm):
     rows, cols = grid.shape
     directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]  # Right, Left, Down, Up
     
@@ -20,18 +37,7 @@ def find_route_astar(grid, start, end):
         current = heappop(open_list)[1]
         
         if current == end:
-            path = []
-            while current in came_from:
-                path.append(current)
-                current = came_from[current]
-            path.append(start)
-            path.reverse()
-            
-            # Set the cells along the path to -1
-            for cell in path:
-                grid[cell[0], cell[1]] = 100
-            
-            return grid
+            return construct_path(start, end, came_from)
         
         for dx, dy in directions:
             neighbor = (current[0] + dx, current[1] + dy)
@@ -50,17 +56,7 @@ def find_route_astar(grid, start, end):
     
     return None
 
-
-# Example usage
-grid = read_pgm()
-start = (40, 33)
-end = (76, 130)
-
-result = find_route_astar(grid, start, end)
-
-if result is not None:
-    print("Grid with the shortest path marked as gray line:")
-    img = Image.fromarray(result)
-    img.show()
-else:
-    print("No valid path exists.")
+def visualize(grid, path, line_val):
+    for cell in path:
+        grid[cell[0], cell[1]] = line_val
+    return grid
