@@ -77,7 +77,7 @@ class PathNode(Node):
         self.tf_listener = TransformListener(self.tf_buffer, self)
         
         # Create publisher for the control command
-        self.pub_control_cmd = self.create_publisher(Twist, '/track_cmd_vel', 10)
+        self.pub_control_cmd = self.create_publisher(Twist, '/path_cmd_vel', 10)
         # Create a subscriber to the detected object pose
         grid = helper.read_pgm()
 
