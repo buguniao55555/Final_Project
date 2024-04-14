@@ -65,8 +65,8 @@ def euler_from_quaternion(q):
 
 class PathNode(Node):
     def __init__(self):
-        super().__init__('tracking_node')
-        self.get_logger().info('Tracking Node Started')
+        super().__init__('path_node')
+        self.get_logger().info('Path Node Started')
         
         
         # ROS parameters
@@ -83,7 +83,6 @@ class PathNode(Node):
 
         grid_expanded_obstacles = helper.take_local(grid, 3, np.min)
 
-        Image.fromarray(grid_expanded_obstacles).save("vis1.png")
 
         start = (40, 33)
         end = (76, 130)
