@@ -83,6 +83,8 @@ class PathNode(Node):
 
         grid_expanded_obstacles = helper.take_local(grid, 3, np.min)
 
+        Image.fromarray(grid_expanded_obstacles).save("vis1.png")
+
         start = (40, 33)
         end = (76, 130)
 
@@ -114,6 +116,13 @@ class PathNode(Node):
             self.get_logger().error('Transform error: ' + str(e))
             return
         return robot_pose
+    def timer_update(self):
+        cmd_vel = self.controller(current_object_pose)
+        
+        # publish the control command
+        self.pub_control_cmd.publish(cmd_vel)
+
+        #################################################
     def controller(self, current_robot_pose):
         # Instructions: You can implement your own control algorithm here
         # feel free to modify the code structure, add more parameters, more input variables for the function, etc.
