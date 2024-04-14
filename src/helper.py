@@ -57,7 +57,7 @@ def construct_path(start, end, came_from):
 
 def find_route_astar(grid, start, end, heuristic = l2norm):
     rows, cols = grid.shape
-    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]  # Right, Left, Down, Up
+    directions = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]  # 8-directions
     
     open_list = []
     heappush(open_list, (0, start))
