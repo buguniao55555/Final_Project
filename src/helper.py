@@ -43,8 +43,10 @@ def take_local(grid, radius, op):
             result[i, j] = op(paddedd[i: i + 2 * r + 1, j: j + 2 * r + 1])
     return result
 
+
 def l2norm(a, b):
     return np.hypot(b[0] - a[0], b[1] - a[1])
+
 
 def construct_path(start, end, came_from):
     path = []
@@ -53,7 +55,8 @@ def construct_path(start, end, came_from):
         path.append(p)
         p = came_from[p]
     path.reverse()
-    return path
+    return np.array(path)
+
 
 def find_route_astar(grid, start, end, heuristic = l2norm):
     rows, cols = grid.shape
@@ -87,6 +90,27 @@ def find_route_astar(grid, start, end, heuristic = l2norm):
                     heappush(open_list, (f_score[neighbor], neighbor))
     
     return None
+
+
+def filter_path(path):
+    if len(path) < 3:
+        return path
+    
+    filtered_path = [path[0]]
+    prev_delta_x = path[1][0] - path[0][0]
+    prev_delta_y = path[1][1] - path[0][1]
+    for i, point in enumerate(path[2:]):
+        # note that i starts from 0, and point start from path[2]
+        prev_point = path[i+1]
+        delta_x = point[0] - prev_point[0]
+        delta_y = point[1] - prev_point[1]
+        if delta_x != prev_delta_x or delta_y != prev_delta_y:
+            filtered_path.append(prev_point)
+        prev_delta_x = delta_x
+        prev_delta_y = delta_y
+    filtered_path.append(path[-1])
+    return filtered_path
+
 
 def visualize(grid, path, line_val):
     for cell in path:
