@@ -4,7 +4,6 @@ from geometry_msgs.msg import Twist, PoseStamped
 from tf2_ros import TransformException, Buffer, TransformListener
 import numpy as np
 import math
-from ReadPGM import read_pgm
 import helper
 from PIL import Image
 
@@ -79,7 +78,7 @@ class PathNode(Node):
         # Create publisher for the control command
         self.pub_control_cmd = self.create_publisher(Twist, '/track_cmd_vel', 10)
         # Create a subscriber to the detected object pose
-        grid = read_pgm()
+        grid = helper.read_pgm()
 
         grid_expanded_obstacles = helper.take_local(grid, 3, np.min)
 
