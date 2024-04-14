@@ -142,8 +142,8 @@ class PathNode(Node):
         self.get_logger().info(str(x))
         self.get_logger().info(str("y"))
         self.get_logger().info(str(y))
-        cmd_vel.linear.y = 0
-        cmd_vel.linear.x = 1
+        cmd_vel.linear.y = 0.0
+        cmd_vel.linear.x = 1.0
         self.t+=0.01
         return cmd_vel
 def main(args=None):
