@@ -103,7 +103,8 @@ class PathNode(Node):
         # Create timer, running at 100Hz
         self.timer = self.create_timer(0.01, self.timer_update)
     def get_current_robot_pose(self):
-        
+        current_robot_pose=0
+        """
         odom_id = self.get_parameter('world_frame_id').get_parameter_value().string_value
         # Get the current robot pose
         try:
@@ -116,6 +117,7 @@ class PathNode(Node):
         except TransformException as e:
             self.get_logger().error('Transform error: ' + str(e))
             return
+            """
         return current_robot_pose
     
     def timer_update(self):
