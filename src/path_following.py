@@ -6,7 +6,8 @@ import numpy as np
 import math
 import helper
 from PIL import Image
-
+intopix=1.82
+inchtom=0.0254
 ## Functions for quaternion and rotation matrix conversion
 ## The code is adapted from the general_robotics_toolbox package
 ## Code reference: https://github.com/rpiRobotics/rpi_general_robotics_toolbox_py
@@ -88,11 +89,8 @@ class PathNode(Node):
         end = (76, 130)
 
         result_path = helper.find_route_astar(grid_expanded_obstacles, start, end)
-        for i in len(result_path):
-            result_path[i][0]=result_path[i][0]-result_path[0][0]
-            result_path[i][1]=result_path[i][1]-result_path[0][1]
-        self.path=result_path
-            
+        filtered_path = helper.filter_path(result_path)
+        self.curve = helper.bezier_curve(filtered_path)    
     
         # for PID control
         self.kp = 1
@@ -126,7 +124,20 @@ class PathNode(Node):
         
         # TODO: Update the control velocity command
         cmd_vel = Twist()
-        cmd_vel.linear.y = (current_robot_pose[1]) * 1.2
-        cmd_vel.linear.x = (current_robot_pose[0]) * 1.2
+        cmd_vel.linear.y = self.curve.evaluate(30/self.timer)[1]*intopix*inchtom/0.01
+        cmd_vel.linear.x = self.curve.evaluate(30/self.timer)[0]*intopix*inchtom/0.01
         return cmd_vel
+def main(args=None):
+    # Initialize the rclpy library
+    rclpy.init(args=args)
+    # Create the node
+    path_node = PathNode()
+    rclpy.spin(path_node)
+    # Destroy the node explicitly
+    path_node.destroy_node()
+    # Shutdown the ROS client library for Python
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
     
