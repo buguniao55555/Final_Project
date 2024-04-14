@@ -109,7 +109,7 @@ def filter_path(path):
         prev_delta_x = delta_x
         prev_delta_y = delta_y
     filtered_path.append(path[-1])
-    return filtered_path
+    return np.array(filtered_path)
 
 
 def visualize(grid, path, line_val):

@@ -1,6 +1,7 @@
 import helper
 from PIL import Image
 import numpy as np
+import cv2
 
 if __name__ == "__main__":
     grid = helper.read_pgm()
@@ -23,7 +24,9 @@ if __name__ == "__main__":
         print("No valid path exists.")
 
     if filtered_path is not None:
-        img = Image.fromarray(helper.visualize(grid.copy(), filtered_path, 100))
-        img.save("vis3.png")
+        rgb_img = cv2.cvtColor(grid.copy(), cv2.COLOR_GRAY2RGB)
+
+        rgb_img[filtered_path[:, 0], filtered_path[:, 1]] = [0, 0, 255]
+        cv2.imwrite("vis3.png", rgb_img)
     else:
         print("No valid path exists.")
