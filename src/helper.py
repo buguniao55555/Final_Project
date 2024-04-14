@@ -1,7 +1,7 @@
 import numpy as np
 from heapq import heappush, heappop
 from PIL import Image
-import numpy as np
+import bezier
 
 def read_pgm():
     # Open the PGM file
@@ -116,3 +116,11 @@ def visualize(grid, path, line_val):
     for cell in path:
         grid[cell[0], cell[1]] = line_val
     return grid
+
+
+def bezier_curve(points):
+    # n: number between 0 and 1
+    # points: list of control points
+    nodes = np.asfortranarray(points.T)
+    curve = bezier.Curve(nodes, degree=len(points)-1)
+    return curve
