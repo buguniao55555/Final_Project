@@ -138,6 +138,10 @@ class PathNode(Node):
         y=float(self.curve.evaluate(30.0/self.t)[1]*intopix*inchtom/0.01)
         x=float(self.curve.evaluate(30.0/self.t)[0]*intopix*inchtom/0.01)
         self.get_logger().info(str(self.t))
+        self.get_logger().info(str("x"))
+        self.get_logger().info(str(x))
+        self.get_logger().info(str("y"))
+        self.get_logger().info(str(y))
         cmd_vel.linear.y = y
         cmd_vel.linear.x = x
         self.t+=0.01
