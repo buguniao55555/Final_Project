@@ -1,10 +1,9 @@
-from ReadPGM import read_pgm
 import helper
 from PIL import Image
 import numpy as np
 
 if __name__ == "__main__":
-    grid = read_pgm()
+    grid = helper.read_pgm()
 
     grid_expanded_obstacles = helper.take_local(grid, 3, np.min)
 
