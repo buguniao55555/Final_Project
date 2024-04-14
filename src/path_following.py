@@ -111,12 +111,14 @@ class PathNode(Node):
             robot_world_x = transform.transform.translation.x
             robot_world_y = transform.transform.translation.y
             robot_world_z = transform.transform.translation.z
-            robot_pose=[robot_world_x,robot_world_y,robot_world_z] 
+            current_robot_pose=[robot_world_x,robot_world_y,robot_world_z] 
         except TransformException as e:
             self.get_logger().error('Transform error: ' + str(e))
             return
-        return robot_pose
+        return current_robot_pose
+    
     def timer_update(self):
+        current_robot_pose=self.get_current_robot_pose()
         cmd_vel = self.controller(current_robot_pose)
         
         # publish the control command
