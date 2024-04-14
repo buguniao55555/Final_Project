@@ -92,6 +92,7 @@ class PathNode(Node):
         filtered_path = helper.filter_path(result_path)
         self.curve = helper.bezier_curve(filtered_path)    
     
+        self.t=0.01
         # for PID control
         self.kp = 1
         # self.ki = 0.01
@@ -133,8 +134,9 @@ class PathNode(Node):
         
         # TODO: Update the control velocity command
         cmd_vel = Twist()
-        cmd_vel.linear.y = self.curve.evaluate(30/self.timer)[1]*intopix*inchtom/0.01
-        cmd_vel.linear.x = self.curve.evaluate(30/self.timer)[0]*intopix*inchtom/0.01
+        cmd_vel.linear.y = self.curve.evaluate(30.0/self.t)[1]*intopix*inchtom/0.01
+        cmd_vel.linear.x = self.curve.evaluate(30.0/self.t)[0]*intopix*inchtom/0.01
+        self.t+=0.01
         return cmd_vel
 def main(args=None):
     # Initialize the rclpy library
