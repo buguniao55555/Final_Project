@@ -117,7 +117,7 @@ class PathNode(Node):
             return
         return robot_pose
     def timer_update(self):
-        cmd_vel = self.controller(current_object_pose)
+        cmd_vel = self.controller(current_robot_pose)
         
         # publish the control command
         self.pub_control_cmd.publish(cmd_vel)
