@@ -93,7 +93,8 @@ class PathNode(Node):
         filtered_path = helper.filter_path(result_path)
         self.curve = helper.bezier_curve(filtered_path)    
     
-        self.t=0.01
+        self.dt = 0.01
+        self.t = self.dt
         # for PID control
         self.kp = 1
         # self.ki = 0.01
@@ -102,7 +103,7 @@ class PathNode(Node):
         self.sum_err = 0.0
 
         # Create timer, running at 100Hz
-        self.timer = self.create_timer(0.01, self.timer_update)
+        self.timer = self.create_timer(self.dt, self.timer_update)
     def get_current_robot_pose(self):
         current_robot_pose=0
         """
@@ -137,8 +138,8 @@ class PathNode(Node):
         
         # TODO: Update the control velocity command
         cmd_vel = Twist()
-        y=float((self.curve.evaluate((self.t+0.01)/30)[1]-self.curve.evaluate(self.t/30)[1])*intopix*inchtom/0.01)
-        x=float((self.curve.evaluate((self.t+0.01)/30)[0]-self.curve.evaluate(self.t/30)[0])*intopix*inchtom/0.01)
+        y=float((self.curve.evaluate((self.t+self.dt)/30)[1]-self.curve.evaluate(self.t/30)[1])*intopix*inchtom/self.dt)
+        x=float((self.curve.evaluate((self.t+self.dt)/30)[0]-self.curve.evaluate(self.t/30)[0])*intopix*inchtom/self.dt)
         self.get_logger().info(str(self.t))
         self.get_logger().info(str("x"))
         self.get_logger().info(str(x))
@@ -147,7 +148,7 @@ class PathNode(Node):
         self.bot.set_car_motion(x,y, 0)
         cmd_vel.linear.y = 0.0
         cmd_vel.linear.x = 1.0
-        self.t+=0.01
+        self.t+=self.dt
         return cmd_vel
 def main(args=None):
     # Initialize the rclpy library
