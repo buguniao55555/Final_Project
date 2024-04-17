@@ -133,10 +133,9 @@ class PathNode(Node):
     def controller(self, current_robot_pose):
         # Instructions: You can implement your own control algorithm here
         # feel free to modify the code structure, add more parameters, more input variables for the function, etc.
-        
-        ########### Write your code here ###########
-        
-        # TODO: Update the control velocity command
+        if self.t > 30.0:
+            self.bot.set_car_motion(0, 0, 0)
+            return
         cmd_vel = Twist()
         y=float((self.curve.evaluate((self.t+self.dt)/30)[1]-self.curve.evaluate(self.t/30)[1])*intopix*inchtom/self.dt)
         x=float((self.curve.evaluate((self.t+self.dt)/30)[0]-self.curve.evaluate(self.t/30)[0])*intopix*inchtom/self.dt)
@@ -145,7 +144,7 @@ class PathNode(Node):
         self.get_logger().info(str(x))
         self.get_logger().info(str("y"))
         self.get_logger().info(str(y))
-        self.bot.set_car_motion(x,y, 0)
+        self.bot.set_car_motion(x,y,0)
         cmd_vel.linear.y = 0.0
         cmd_vel.linear.x = 1.0
         self.t+=self.dt
