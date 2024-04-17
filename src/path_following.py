@@ -135,8 +135,8 @@ class PathNode(Node):
         
         # TODO: Update the control velocity command
         cmd_vel = Twist()
-        y=float(self.curve.evaluate(self.t/30)[1]*intopix*inchtom/0.01)
-        x=float(self.curve.evaluate(self.t/30)[0]*intopix*inchtom/0.01)
+        y=float((self.curve.evaluate((self.t+0.01)/30)[1]-self.curve.evaluate(self.t/30)[1])*intopix*inchtom/0.01)
+        x=float((self.curve.evaluate((self.t+0.01)/30)[0]-self.curve.evaluate(self.t/30)[0])*intopix*inchtom/0.01)
         self.get_logger().info(str(self.t))
         self.get_logger().info(str("x"))
         self.get_logger().info(str(x))
