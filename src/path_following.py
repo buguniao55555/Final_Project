@@ -6,6 +6,7 @@ import numpy as np
 import math
 import helper
 from PIL import Image
+from Rosmaster_Lib import Rosmaster
 intopix=1.82
 inchtom=0.0254
 ## Functions for quaternion and rotation matrix conversion
@@ -68,7 +69,8 @@ class PathNode(Node):
         super().__init__('path_node')
         self.get_logger().info('Path Node Started')
         
-        
+        self.bot=Rosmaster()
+        self.bot.create_receive_threading()
         # ROS parameters
         self.declare_parameter('world_frame_id', 'odom')
 
@@ -142,6 +144,7 @@ class PathNode(Node):
         self.get_logger().info(str(x))
         self.get_logger().info(str("y"))
         self.get_logger().info(str(y))
+        self.bot.set_car_motion(x,y, 0)
         cmd_vel.linear.y = 0.0
         cmd_vel.linear.x = 1.0
         self.t+=0.01
