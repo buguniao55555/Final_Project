@@ -10,7 +10,6 @@ if __name__ == "__main__":
 
     Image.fromarray(grid_expanded_obstacles).save("vis1.png")
 
-    #start = (40, 33)
     start=(40,60)
     end=(60,115)
     #end = (76, 130)

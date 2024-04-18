@@ -7,6 +7,7 @@ import math
 import helper
 from PIL import Image
 from Rosmaster_Lib import Rosmaster
+import time 
 intopix=1.82
 inchtom=0.0254
 ## Functions for quaternion and rotation matrix conversion
@@ -90,41 +91,69 @@ class PathNode(Node):
         end=(60,115)
         #end = (76, 130)
 
-        result_path = helper.find_route_astar(grid_expanded_obstacles, start, end)
+        self.result_path = helper.find_route_astar(grid_expanded_obstacles, start, end)
         filtered_path = helper.filter_path(result_path)
         self.curve = helper.bezier_curve(filtered_path)    
     
-        self.dt = 0.02
-        self.t = 0
+        self.dt = 0.05
+        self.t = self.dt
         # for PID control
         self.kp = 1
         # self.ki = 0.01
         self.kd = 15
         self.prev_err = 0.0
         self.sum_err = 0.0
+        self.i=0
 
         # Create timer, running at 100Hz
-        self.timer = self.create_timer(self.dt, self.controller)
+        self.timer = self.create_timer(self.dt, self.timer_update)
+    def get_current_robot_pose(self):
+        current_robot_pose=0
+        """
+        odom_id = self.get_parameter('world_frame_id').get_parameter_value().string_value
+        # Get the current robot pose
+        try:
+            # from base_footprint to odom
+            transform = self.tf_buffer.lookup_transform('base_footprint', odom_id, rclpy.time.Time())
+            robot_world_x = transform.transform.translation.x
+            robot_world_y = transform.transform.translation.y
+            robot_world_z = transform.transform.translation.z
+            current_robot_pose=[robot_world_x,robot_world_y,robot_world_z] 
+        except TransformException as e:
+            self.get_logger().error('Transform error: ' + str(e))
+            return
+            """
+        return current_robot_pose
+    
+    def timer_update(self):
+        current_robot_pose=self.get_current_robot_pose()
+        cmd_vel = self.controller(current_robot_pose)
+        
+        # publish the control command
+        self.pub_control_cmd.publish(cmd_vel)
 
-
-    def controller(self):
+        #################################################
+    def controller(self, current_robot_pose):
         # Instructions: You can implement your own control algorithm here
         # feel free to modify the code structure, add more parameters, more input variables for the function, etc.
         if self.t > 30.0:
             self.bot.set_car_motion(0, 0, 0)
             return
-        y=float((self.curve.evaluate((self.t+self.dt)/30)[1]-self.curve.evaluate(self.t/30)[1])*intopix*inchtom/self.dt)
-        x=float((self.curve.evaluate((self.t+self.dt)/30)[0]-self.curve.evaluate(self.t/30)[0])*intopix*inchtom/self.dt)
-        
-        # x /= 1.2
-        # y /= 1.2
-
+        cmd_vel = Twist()
+        if self.i>=len(self.resultpath)
+            self.bot.set_car_motion(0, 0, 0)
+            return
+        #y=float((self.curve.evaluate((self.t+self.dt)/30)[1]-self.curve.evaluate(self.t/30)[1])*intopix*inchtom/self.dt)
+        #x=float((self.curve.evaluate((self.t+self.dt)/30)[0]-self.curve.evaluate(self.t/30)[0])*intopix*inchtom/self.dt)
+        y=float((self.resultpath[self.i+1][1]-self.resultpath[self.i][1])/self.dt)
+        x=float((self.resultpath[self.i+1][0]-self.resultpath[self.i][0])/self.dt)
         self.get_logger().info(str(self.t) + " x: " + str(x) + " y: " + str(y))
-
         self.bot.set_car_motion(x,y,0)
-        self.t += self.dt
-
-
+        cmd_vel.linear.y = 0.0
+        cmd_vel.linear.x = 1.0
+        self.i+=1
+        self.t+=self.dt
+        return cmd_vel
 def main(args=None):
     # Initialize the rclpy library
     rclpy.init(args=args)
