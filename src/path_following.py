@@ -147,7 +147,7 @@ class PathNode(Node):
         #x=float((self.curve.evaluate((self.t+self.dt)/30)[0]-self.curve.evaluate(self.t/30)[0])*intopix*inchtom/self.dt)
         y=float((self.result_path[self.i+1][1]-self.result_path[self.i][1])*intopix*inchtom/self.dt)
         x=float((self.result_path[self.i+1][0]-self.result_path[self.i][0])*intopix*inchtom/self.dt)
-        self.get_logger().info(str(self.t) + " x: " + str(x) + " y: " + str(y))
+        self.get_logger().info(str(self.t) + " x: " + str(x) + " y: " + str(y)+"Next"+str(self.result_path[self.i+1]))
         self.bot.set_car_motion(x,y,0)
         
         # pos_x = self.get_position().transform.translation.x
