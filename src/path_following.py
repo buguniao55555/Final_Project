@@ -95,7 +95,7 @@ class PathNode(Node):
         filtered_path = helper.filter_path(self.result_path)
         self.curve = helper.bezier_curve(filtered_path)    
     
-        self.dt = 0.05
+        self.dt = 0.1
         self.t = self.dt
         # for PID control
         self.kp = 1
@@ -140,7 +140,7 @@ class PathNode(Node):
             self.bot.set_car_motion(0, 0, 0)
             return
         cmd_vel = Twist()
-        if self.i>=len(self.result_path):
+        if self.i>=len(self.result_path)-1:
             self.bot.set_car_motion(0, 0, 0)
             return
         #y=float((self.curve.evaluate((self.t+self.dt)/30)[1]-self.curve.evaluate(self.t/30)[1])*intopix*inchtom/self.dt)
