@@ -115,7 +115,12 @@ class PathNode(Node):
             return
         y=float((self.curve.evaluate((self.t+self.dt)/30)[1]-self.curve.evaluate(self.t/30)[1])*intopix*inchtom/self.dt)
         x=float((self.curve.evaluate((self.t+self.dt)/30)[0]-self.curve.evaluate(self.t/30)[0])*intopix*inchtom/self.dt)
+        
+        x /= 1.2
+        y /= 1.2
+
         self.get_logger().info(str(self.t) + " x: " + str(x) + " y: " + str(y))
+        
         self.bot.set_car_motion(x,y,0)
         self.t += self.dt
 
