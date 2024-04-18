@@ -104,7 +104,7 @@ class PathNode(Node):
         self.sum_err = 0.0
 
         # Create timer, running at 100Hz
-        self.timer = self.create_timer(self.dt, self.timer_update)
+        self.timer = self.create_timer(self.dt, self.controller)
     def get_current_robot_pose(self):
         current_robot_pose=0
         """
@@ -122,30 +122,20 @@ class PathNode(Node):
             return
             """
         return current_robot_pose
-    
-    def timer_update(self):
-        current_robot_pose=self.get_current_robot_pose()
-        cmd_vel = self.controller(current_robot_pose)
-        
-        # publish the control command
-        # self.pub_control_cmd.publish(cmd_vel)
 
-        #################################################
-    def controller(self, current_robot_pose):
+    def controller(self):
         # Instructions: You can implement your own control algorithm here
         # feel free to modify the code structure, add more parameters, more input variables for the function, etc.
         if self.t > 30.0:
             self.bot.set_car_motion(0, 0, 0)
             return
-        cmd_vel = Twist()
         y=float((self.curve.evaluate((self.t+self.dt)/30)[1]-self.curve.evaluate(self.t/30)[1])*intopix*inchtom/self.dt)
         x=float((self.curve.evaluate((self.t+self.dt)/30)[0]-self.curve.evaluate(self.t/30)[0])*intopix*inchtom/self.dt)
         self.get_logger().info(str(self.t) + " x: " + str(x) + " y: " + str(y))
         self.bot.set_car_motion(x,y,0)
-        cmd_vel.linear.y = 0.0
-        cmd_vel.linear.x = 1.0
         self.t+=self.dt
-        return cmd_vel
+
+        
 def main(args=None):
     # Initialize the rclpy library
     rclpy.init(args=args)
