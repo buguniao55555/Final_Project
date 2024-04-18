@@ -128,7 +128,7 @@ class PathNode(Node):
         cmd_vel = self.controller(current_robot_pose)
         
         # publish the control command
-        self.pub_control_cmd.publish(cmd_vel)
+        # self.pub_control_cmd.publish(cmd_vel)
 
         #################################################
     def controller(self, current_robot_pose):
