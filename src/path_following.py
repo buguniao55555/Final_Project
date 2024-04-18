@@ -92,7 +92,7 @@ class PathNode(Node):
         #end = (76, 130)
 
         self.result_path = helper.find_route_astar(grid_expanded_obstacles, start, end)
-        filtered_path = helper.filter_path(result_path)
+        filtered_path = helper.filter_path(self.result_path)
         self.curve = helper.bezier_curve(filtered_path)    
     
         self.dt = 0.05
