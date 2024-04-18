@@ -94,8 +94,8 @@ class PathNode(Node):
         filtered_path = helper.filter_path(result_path)
         self.curve = helper.bezier_curve(filtered_path)    
     
-        self.dt = 0.01
-        self.t = self.dt
+        self.dt = 0.02
+        self.t = 0
         # for PID control
         self.kp = 1
         # self.ki = 0.01
@@ -105,23 +105,7 @@ class PathNode(Node):
 
         # Create timer, running at 100Hz
         self.timer = self.create_timer(self.dt, self.controller)
-    def get_current_robot_pose(self):
-        current_robot_pose=0
-        """
-        odom_id = self.get_parameter('world_frame_id').get_parameter_value().string_value
-        # Get the current robot pose
-        try:
-            # from base_footprint to odom
-            transform = self.tf_buffer.lookup_transform('base_footprint', odom_id, rclpy.time.Time())
-            robot_world_x = transform.transform.translation.x
-            robot_world_y = transform.transform.translation.y
-            robot_world_z = transform.transform.translation.z
-            current_robot_pose=[robot_world_x,robot_world_y,robot_world_z] 
-        except TransformException as e:
-            self.get_logger().error('Transform error: ' + str(e))
-            return
-            """
-        return current_robot_pose
+
 
     def controller(self):
         # Instructions: You can implement your own control algorithm here
@@ -133,9 +117,9 @@ class PathNode(Node):
         x=float((self.curve.evaluate((self.t+self.dt)/30)[0]-self.curve.evaluate(self.t/30)[0])*intopix*inchtom/self.dt)
         self.get_logger().info(str(self.t) + " x: " + str(x) + " y: " + str(y))
         self.bot.set_car_motion(x,y,0)
-        self.t+=self.dt
+        self.t += self.dt
 
-        
+
 def main(args=None):
     # Initialize the rclpy library
     rclpy.init(args=args)
