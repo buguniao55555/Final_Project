@@ -95,7 +95,7 @@ class PathNode(Node):
         filtered_path = helper.filter_path(self.result_path)
         self.curve = helper.bezier_curve(filtered_path)    
     
-        self.dt = 1
+        self.dt = .5
         self.t = self.dt
         # for PID control
         self.kp = 1
