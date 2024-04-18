@@ -140,17 +140,16 @@ class PathNode(Node):
             self.bot.set_car_motion(0, 0, 0)
             return
         cmd_vel = Twist()
-        if self.i>=len(self.resultpath):
+        if self.i>=len(self.result_path):
             self.bot.set_car_motion(0, 0, 0)
             return
         #y=float((self.curve.evaluate((self.t+self.dt)/30)[1]-self.curve.evaluate(self.t/30)[1])*intopix*inchtom/self.dt)
         #x=float((self.curve.evaluate((self.t+self.dt)/30)[0]-self.curve.evaluate(self.t/30)[0])*intopix*inchtom/self.dt)
-        y=float((self.resultpath[self.i+1][1]-self.resultpath[self.i][1])/self.dt)
-        x=float((self.resultpath[self.i+1][0]-self.resultpath[self.i][0])/self.dt)
+        y=float((self.result_path[self.i+1][1]-self.result_path[self.i][1])/self.dt)
+        x=float((self.result_path[self.i+1][0]-self.result_path[self.i][0])/self.dt)
         self.get_logger().info(str(self.t) + " x: " + str(x) + " y: " + str(y))
         self.bot.set_car_motion(x,y,0)
-        cmd_vel.linear.y = 0.0
-        cmd_vel.linear.x = 1.0
+    
         self.i+=1
         self.t+=self.dt
         return cmd_vel
