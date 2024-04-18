@@ -8,7 +8,7 @@ import helper
 from PIL import Image
 from Rosmaster_Lib import Rosmaster
 import time 
-intopix=1.82
+intopix=1.7625
 inchtom=0.0254
 ## Functions for quaternion and rotation matrix conversion
 ## The code is adapted from the general_robotics_toolbox package
@@ -95,7 +95,7 @@ class PathNode(Node):
         filtered_path = helper.filter_path(self.result_path)
         self.curve = helper.bezier_curve(filtered_path)    
     
-        self.dt = .5
+        self.dt = .2
         self.t = self.dt
         # for PID control
         self.kp = 1
