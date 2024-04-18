@@ -150,7 +150,8 @@ class PathNode(Node):
         self.get_logger().info(str(self.t) + " x: " + str(x) + " y: " + str(y))
         self.bot.set_car_motion(x,y,0)
         
-        pos_x = self.get_position().transform.translation.x
+        # pos_x = self.get_position().transform.translation.x
+        # pos_y = self.get_position().transform.translation.y
 
         self.i+=1
         self.t+=self.dt
