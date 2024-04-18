@@ -87,7 +87,7 @@ class PathNode(Node):
         grid_expanded_obstacles = helper.take_local(grid, 3, np.min)
 
 
-        start = (40, 33)
+        start = (40, 60)
         end=(60,115)
         #end = (76, 130)
 
