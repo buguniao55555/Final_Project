@@ -4,9 +4,9 @@ import numpy as np
 import cv2
 
 if __name__ == "__main__":
-    grid = helper.read_pgm()
+    grid = helper.read_pgm("maps/new_map.pgm")
 
-    grid_expanded_obstacles = helper.take_local(grid, 3, np.min)
+    grid_expanded_obstacles = helper.take_local(grid, 4, np.min)
 
     Image.fromarray(grid_expanded_obstacles).save("new_map_1.png")
 

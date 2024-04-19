@@ -84,7 +84,7 @@ class PathNode(Node):
         # Create a subscriber to the detected object pose
         grid = helper.read_pgm("maps/new_map.pgm")
 
-        grid_expanded_obstacles = helper.take_local(grid, 3, np.min)
+        grid_expanded_obstacles = helper.take_local(grid, 4, np.min)
 
 
         start=(40,60)
@@ -146,6 +146,8 @@ class PathNode(Node):
         #x=float((self.curve.evaluate((self.t+self.dt)/30)[0]-self.curve.evaluate(self.t/30)[0])*intopix*inchtom/self.dt)
         y=float((self.result_path[self.i+1][1]-self.result_path[self.i][1])*intopix*inchtom/self.dt)
         x=float((self.result_path[self.i+1][0]-self.result_path[self.i][0])*intopix*inchtom/self.dt)
+        x *= 1.05
+        y *= 1.05
         self.get_logger().info(str(self.t) + " x: " + str(x) + " y: " + str(y)+"Next"+str(self.result_path[self.i+1]))
         self.bot.set_car_motion(x,y,0)
         
