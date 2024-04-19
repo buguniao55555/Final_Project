@@ -82,7 +82,7 @@ class PathNode(Node):
         # Create publisher for the control command
         self.pub_control_cmd = self.create_publisher(Twist, '/path_cmd_vel', 10)
         # Create a subscriber to the detected object pose
-        grid = helper.read_pgm()
+        grid = helper.read_pgm("maps/new_map.pgm")
 
         grid_expanded_obstacles = helper.take_local(grid, 3, np.min)
 

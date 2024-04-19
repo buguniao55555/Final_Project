@@ -3,9 +3,9 @@ from heapq import heappush, heappop
 from PIL import Image
 import bezier
 
-def read_pgm():
+def read_pgm(pgm_name):
     # Open the PGM file
-    image = Image.open("maps/new_map.pgm")
+    image = Image.open(pgm_name)
     image = image.convert("L")
     width, height = image.size
     pixels = image.load()
