@@ -66,7 +66,7 @@ def euler_from_quaternion(q):
     return [roll,pitch,yaw]
 
 class PathNode(Node):
-    def __init__(self):
+    def __init__(self, start, end):
         super().__init__('path_node')
         self.get_logger().info('Path Node Started')
         
@@ -85,10 +85,6 @@ class PathNode(Node):
         grid = helper.read_pgm("maps/new_map.pgm")
 
         grid_expanded_obstacles = helper.take_local(grid, 4, np.min)
-
-
-        start=(40,60)
-        end=(52,120)
 
         self.result_path = helper.find_route_astar(grid_expanded_obstacles, start, end)
         filtered_path = helper.filter_path(self.result_path)
@@ -161,7 +157,9 @@ def main(args=None):
     # Initialize the rclpy library
     rclpy.init(args=args)
     # Create the node
-    path_node = PathNode()
+    start_end =[(40,60), (52,120)]
+    start_end_2 = [(40, 60), (75, 120)]
+    path_node = PathNode(start_end_2[0], start_end_2[1])
     rclpy.spin(path_node)
     # Destroy the node explicitly
     path_node.destroy_node()
