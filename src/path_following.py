@@ -8,7 +8,7 @@ import helper
 from PIL import Image
 from Rosmaster_Lib import Rosmaster
 import time 
-intopix=1.7625
+intopix=1.675
 inchtom=0.0254
 ## Functions for quaternion and rotation matrix conversion
 ## The code is adapted from the general_robotics_toolbox package
@@ -87,9 +87,8 @@ class PathNode(Node):
         grid_expanded_obstacles = helper.take_local(grid, 3, np.min)
 
 
-        start = (40, 60)
-        end=(65,110)
-        #end = (76, 130)
+        start=(40,60)
+        end=(55,120)
 
         self.result_path = helper.find_route_astar(grid_expanded_obstacles, start, end)
         filtered_path = helper.filter_path(self.result_path)

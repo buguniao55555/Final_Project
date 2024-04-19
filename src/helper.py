@@ -5,7 +5,7 @@ import bezier
 
 def read_pgm():
     # Open the PGM file
-    image = Image.open("maps/yahboomcar.pgm")
+    image = Image.open("maps/new_map.pgm")
     image = image.convert("L")
     width, height = image.size
     pixels = image.load()
