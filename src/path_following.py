@@ -88,7 +88,7 @@ class PathNode(Node):
 
 
         start=(40,60)
-        end=(55,120)
+        end=(52,120)
 
         self.result_path = helper.find_route_astar(grid_expanded_obstacles, start, end)
         filtered_path = helper.filter_path(self.result_path)

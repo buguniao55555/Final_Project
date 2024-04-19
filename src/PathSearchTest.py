@@ -11,7 +11,7 @@ if __name__ == "__main__":
     Image.fromarray(grid_expanded_obstacles).save("new_map_1.png")
 
     start=(40,60)
-    end=(55,120)
+    end=(52,120)
     #end = (76, 130)
 
     result_path = helper.find_route_astar(grid_expanded_obstacles, start, end)
