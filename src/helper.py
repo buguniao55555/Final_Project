@@ -44,7 +44,7 @@ def take_local(grid, radius, op):
     return result
 
 
-def l2norm(a, b):
+def l1norm(a, b):
     return np.sum([b[0] - a[0], b[1] - a[1]])
 
 
@@ -58,7 +58,7 @@ def construct_path(start, end, came_from):
     return np.array(path)
 
 
-def find_route_astar(grid, start, end, heuristic = l2norm):
+def find_route_astar(grid, start, end, heuristic = l1norm):
     rows, cols = grid.shape
     directions = [(0, 1), (1, 0), (0, -1), (-1, 0), (1, 1), (1, -1), (-1, -1), (-1, 1)]  # 8-directions
     
