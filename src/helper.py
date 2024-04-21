@@ -45,7 +45,7 @@ def take_local(grid, radius, op):
 
 
 def l2norm(a, b):
-    return np.hypot(b[0] - a[0], b[1] - a[1])
+    return np.sum([b[0] - a[0], b[1] - a[1]])
 
 
 def construct_path(start, end, came_from):
@@ -60,7 +60,7 @@ def construct_path(start, end, came_from):
 
 def find_route_astar(grid, start, end, heuristic = l2norm):
     rows, cols = grid.shape
-    directions = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]  # 8-directions
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0), (1, 1), (1, -1), (-1, -1), (-1, 1)]  # 8-directions
     
     open_list = []
     heappush(open_list, (0, start))
@@ -81,7 +81,7 @@ def find_route_astar(grid, start, end, heuristic = l2norm):
                 0 <= neighbor[1] < cols and
                 grid[neighbor[0], neighbor[1]] > 205):
                 
-                tentative_g_score = g_score[current] + 1
+                tentative_g_score = g_score[current] + (1.4 if abs(dx) + abs(dy) == 2 else 1)
                 
                 if neighbor not in g_score or tentative_g_score < g_score[neighbor]:
                     came_from[neighbor] = current
